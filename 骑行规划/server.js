@@ -1,12 +1,13 @@
-require('dotenv').config({ path: require('path').join(__dirname, '.env') });
+if (!process.env.TURSO_URL) {
+  try { require('dotenv').config({ path: require('path').join(__dirname, '.env') }); } catch (e) {}
+}
 const express = require('express');
 const session = require('express-session');
 const bcrypt = require('bcryptjs');
 const path = require('path');
 const { initDB, queryAll, queryOne, execute } = require('./database/init');
-
-const app = express();
 const PORT = process.env.PORT || 3000;
+const app = express();
 
 // Middleware
 app.use(express.json({ limit: '10mb' }));

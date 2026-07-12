@@ -1,4 +1,6 @@
-require('dotenv').config({ path: require('path').join(__dirname, '..', '.env') });
+if (!process.env.TURSO_URL) {
+  try { require('dotenv').config({ path: require('path').join(__dirname, '..', '.env') }); } catch (e) {}
+}
 const { createClient } = require('@libsql/client');
 
 const client = createClient({
