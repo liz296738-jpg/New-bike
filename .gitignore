@@ -4,3 +4,7 @@ data/
 auth
 auth-wal
 .claude/settings.local.json
+*.jpg
+abaqus.rpy
+abaqus_acis.log
+abq.app_cache
