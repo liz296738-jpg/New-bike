@@ -3,3 +3,4 @@ node_modules/
 data/
 auth
 auth-wal
+.claude/settings.local.json
