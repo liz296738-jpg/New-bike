@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>骑行路线规划</title>
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <div class="app-container">
+    <!-- Sidebar -->
+    <aside class="sidebar">
+      <div class="sidebar-header">
+        <h2>骑行路线</h2>
+        <div class="user-info">
+          <span id="currentUser"></span>
+          <button onclick="logout()">退出</button>
+        </div>
+      </div>
+      <div class="sidebar-search">
+        <input type="text" id="searchInput" placeholder="搜索路线或创建者..." oninput="loadRoutes()">
+      </div>
+      <div id="routeList" class="route-list"></div>
+      <button class="add-btn" onclick="startNewRoute()">+ 创建新路线</button>
+    </aside>
+
+    <!-- Map -->
+    <div class="map-container">
+      <div id="map"></div>
+      <div id="mapHint" class="map-hint hidden">点击地图添加路线点 | 双击最后一个点结束规划</div>
+      <div id="routePanel" class="panel hidden"></div>
+    </div>
+  </div>
+
+  <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+  <script src="app.js"></script>
+</body>
+</html>

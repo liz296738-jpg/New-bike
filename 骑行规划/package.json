@@ -1,0 +1,16 @@
+{
+  "name": "cycling-planner",
+  "version": "2.0.0",
+  "description": "骑行路线规划共享平台",
+  "main": "server.js",
+  "scripts": {
+    "start": "bun run server.js",
+    "dev": "bun --watch server.js"
+  },
+  "dependencies": {
+    "bcryptjs": "^3.0.3",
+    "express": "^5.2.1",
+    "express-session": "^1.19.0",
+    "sql.js": "^1.14.1"
+  }
+}

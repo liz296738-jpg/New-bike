@@ -3,8 +3,8 @@
   "configurations": [
     {
       "name": "cycling-planner",
-      "runtimeExecutable": "C:\\Users\\ASUA\\AppData\\Local\\nodejs\\node-v22.14.0-win-x64\\node",
-      "runtimeArgs": ["C:\\Users\\ASUA\\OneDrive\\Desktop\\cc\\cycling-planner\\server\\index.js"],
+      "runtimeExecutable": "C:/Users/ASUA/.bun/bin/bun",
+      "runtimeArgs": ["run", "server.js"],
       "port": 3000
     }
   ]

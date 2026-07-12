@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>登录 - 骑行路线规划</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body class="auth-page">
+  <div class="auth-card">
+    <h1>骑行路线规划</h1>
+    <div class="tabs">
+      <button class="tab active" data-tab="login">登录</button>
+      <button class="tab" data-tab="register">注册</button>
+    </div>
+    <form id="loginForm" class="auth-form">
+      <input type="text" name="username" placeholder="用户名" required autocomplete="username">
+      <input type="password" name="password" placeholder="密码" required autocomplete="current-password">
+      <button type="submit">登录</button>
+      <p class="error" id="loginError"></p>
+    </form>
+    <form id="registerForm" class="auth-form hidden">
+      <input type="text" name="username" placeholder="用户名" required autocomplete="username">
+      <input type="password" name="password" placeholder="密码（至少4位）" required autocomplete="new-password">
+      <button type="submit">注册</button>
+      <p class="error" id="registerError"></p>
+    </form>
+  </div>
+
+  <script>
+    const tabs = document.querySelectorAll('.tab');
+    const loginForm = document.getElementById('loginForm');
+    const registerForm = document.getElementById('registerForm');
+    const loginError = document.getElementById('loginError');
+    const registerError = document.getElementById('registerError');
+
+    tabs.forEach(t => t.addEventListener('click', () => {
+      tabs.forEach(x => x.classList.remove('active'));
+      t.classList.add('active');
+      const show = t.dataset.tab;
+      loginForm.classList.toggle('hidden', show !== 'login');
+      registerForm.classList.toggle('hidden', show !== 'register');
+    }));
+
+    loginForm.addEventListener('submit', async e => {
+      e.preventDefault();
+      loginError.textContent = '';
+      const fd = new FormData(loginForm);
+      const res = await fetch('/api/login', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ username: fd.get('username'), password: fd.get('password') })
+      });
+      const data = await res.json();
+      if (res.ok) { window.location.href = '/'; }
+      else { loginError.textContent = data.error; }
+    });
+
+    registerForm.addEventListener('submit', async e => {
+      e.preventDefault();
+      registerError.textContent = '';
+      const fd = new FormData(registerForm);
+      const res = await fetch('/api/register', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ username: fd.get('username'), password: fd.get('password') })
+      });
+      const data = await res.json();
+      if (res.ok) { window.location.href = '/'; }
+      else { registerError.textContent = data.error; }
+    });
+  </script>
+</body>
+</html>
