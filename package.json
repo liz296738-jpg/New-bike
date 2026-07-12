@@ -3,6 +3,13 @@
   "engines": {
     "node": ">=18"
   },
+  "dependencies": {
+    "@libsql/client": "^0.17.4",
+    "bcryptjs": "^3.0.3",
+    "dotenv": "^17.4.2",
+    "express": "^5.2.1",
+    "express-session": "^1.19.0"
+  },
   "scripts": {
     "postinstall": "cd 骑行规划 && npm install",
     "start": "cd 骑行规划 && node server.js"
