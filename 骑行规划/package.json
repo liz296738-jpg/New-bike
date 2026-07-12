@@ -8,9 +8,12 @@
     "dev": "bun --watch server.js"
   },
   "dependencies": {
+    "@libsql/client": "^0.17.4",
     "bcryptjs": "^3.0.3",
+    "dotenv": "^17.4.2",
     "express": "^5.2.1",
     "express-session": "^1.19.0",
+    "localtunnel": "^2.0.2",
     "sql.js": "^1.14.1"
   }
 }

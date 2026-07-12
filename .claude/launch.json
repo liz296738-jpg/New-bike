@@ -4,8 +4,9 @@
     {
       "name": "cycling-planner",
       "runtimeExecutable": "C:/Users/ASUA/.bun/bin/bun",
-      "runtimeArgs": ["run", "server.js"],
-      "port": 3000
+      "runtimeArgs": ["run", "骑行规划/server.js"],
+      "port": 3001,
+      "env": { "PORT": "3001" }
     }
   ]
 }

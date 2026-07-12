@@ -1,35 +1,21 @@
-const initSqlJs = require('sql.js');
-const path = require('path');
-const fs = require('fs');
+require('dotenv').config({ path: require('path').join(__dirname, '..', '.env') });
+const { createClient } = require('@libsql/client');
 
-const DB_PATH = path.join(__dirname, '..', 'data', 'cycling.db');
-
-let db = null;
+const client = createClient({
+  url: process.env.TURSO_URL,
+  authToken: process.env.TURSO_TOKEN,
+});
 
 async function initDB() {
-  const dataDir = path.dirname(DB_PATH);
-  if (!fs.existsSync(dataDir)) fs.mkdirSync(dataDir, { recursive: true });
-
-  const SQL = await initSqlJs();
-  if (fs.existsSync(DB_PATH)) {
-    const buf = fs.readFileSync(DB_PATH);
-    db = new SQL.Database(buf);
-  } else {
-    db = new SQL.Database();
-  }
-
-  db.run('PRAGMA foreign_keys = ON');
-
-  db.run(`
+  await client.execute(`
     CREATE TABLE IF NOT EXISTS users (
       id INTEGER PRIMARY KEY AUTOINCREMENT,
       username TEXT UNIQUE NOT NULL,
       password_hash TEXT NOT NULL,
-      created_at TEXT DEFAULT (datetime('now', 'localtime'))
+      created_at TEXT DEFAULT (datetime('now'))
     )
   `);
-
-  db.run(`
+  await client.execute(`
     CREATE TABLE IF NOT EXISTS routes (
       id INTEGER PRIMARY KEY AUTOINCREMENT,
       name TEXT NOT NULL,
@@ -37,12 +23,11 @@ async function initDB() {
       difficulty TEXT CHECK(difficulty IN ('easy', 'medium', 'hard')) DEFAULT 'medium',
       duration TEXT,
       notes TEXT,
-      created_at TEXT DEFAULT (datetime('now', 'localtime')),
+      created_at TEXT DEFAULT (datetime('now')),
       FOREIGN KEY (creator_id) REFERENCES users(id)
     )
   `);
-
-  db.run(`
+  await client.execute(`
     CREATE TABLE IF NOT EXISTS route_points (
       id INTEGER PRIMARY KEY AUTOINCREMENT,
       route_id INTEGER NOT NULL,
@@ -52,30 +37,47 @@ async function initDB() {
       FOREIGN KEY (route_id) REFERENCES routes(id) ON DELETE CASCADE
     )
   `);
-
-  db.run(`
+  await client.execute(`
     CREATE TABLE IF NOT EXISTS comments (
       id INTEGER PRIMARY KEY AUTOINCREMENT,
       route_id INTEGER NOT NULL,
       user_id INTEGER NOT NULL,
       content TEXT NOT NULL,
-      created_at TEXT DEFAULT (datetime('now', 'localtime')),
+      created_at TEXT DEFAULT (datetime('now')),
       FOREIGN KEY (route_id) REFERENCES routes(id) ON DELETE CASCADE,
       FOREIGN KEY (user_id) REFERENCES users(id)
     )
   `);
-
-  saveDB();
-  return db;
 }
 
-function saveDB() {
-  if (!db) return;
-  const data = db.export();
-  const buf = Buffer.from(data);
-  fs.writeFileSync(DB_PATH, buf);
+async function queryAll(sql, params = []) {
+  const result = await client.execute({ sql, args: params });
+  return result.rows.map(row => {
+    const obj = {};
+    result.columns.forEach((col, i) => { obj[col] = row[i]; });
+    return obj;
+  });
 }
 
-function getDB() { return db; }
+async function queryOne(sql, params = []) {
+  const rows = await queryAll(sql, params);
+  return rows[0] || null;
+}
 
-module.exports = { initDB, getDB, saveDB, DB_PATH };
+async function execute(sql, params = []) {
+  return client.execute({ sql, args: params });
+}
+
+function getClient() { return client; }
+
+function bigintToNumber(obj) {
+  if (typeof obj === 'bigint') return Number(obj);
+  if (obj && typeof obj === 'object') {
+    for (const k of Object.keys(obj)) {
+      if (typeof obj[k] === 'bigint') obj[k] = Number(obj[k]);
+    }
+  }
+  return obj;
+}
+
+module.exports = { initDB, queryAll, queryOne, execute, getClient, bigintToNumber };
