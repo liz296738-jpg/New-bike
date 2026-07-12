@@ -1,7 +1,10 @@
 {
   "name": "cc-projects",
+  "engines": {
+    "node": ">=18"
+  },
   "scripts": {
-    "install": "cd 骑行规划 && npm install",
+    "postinstall": "cd 骑行规划 && npm install",
     "start": "cd 骑行规划 && node server.js"
   }
 }
