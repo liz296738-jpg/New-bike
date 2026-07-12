@@ -1,0 +1,7 @@
+{
+  "name": "cc-projects",
+  "scripts": {
+    "install": "cd 骑行规划 && npm install",
+    "start": "cd 骑行规划 && node server.js"
+  }
+}
