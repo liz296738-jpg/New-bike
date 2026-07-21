@@ -1,0 +1,104 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* ── 全局 ──────────────────────────────────────────────── */
+html, body, #app {
+  height: 100%;
+  margin: 0;
+  font-family: -apple-system, BlinkMacSystemFont, 'PingFang SC',
+               'Hiragino Sans GB', 'Microsoft YaHei', sans-serif;
+  -webkit-font-smoothing: antialiased;
+}
+
+/* ── 滚动条 ────────────────────────────────────────────── */
+::-webkit-scrollbar          { width: 5px; height: 5px; }
+::-webkit-scrollbar-track    { background: transparent; }
+::-webkit-scrollbar-thumb    { background: #CBD5E1; border-radius: 99px; }
+::-webkit-scrollbar-thumb:hover { background: #94A3B8; }
+
+/* ── markdown-it 渲染输出 ──────────────────────────────── */
+.markdown-body h1,
+.markdown-body h2,
+.markdown-body h3 {
+  font-weight: 600;
+  margin: 0.5em 0 0.25em;
+}
+.markdown-body h1 { font-size: 1.2rem; }
+.markdown-body h2 { font-size: 1.1rem; }
+.markdown-body h3 { font-size: 1rem; }
+.markdown-body p  { margin: 0.25em 0; }
+.markdown-body ul,
+.markdown-body ol { padding-left: 1.25em; margin: 0.25em 0; }
+.markdown-body li { margin: 0.125em 0; }
+.markdown-body code {
+  background: #F1F5F9;
+  padding: 0.1em 0.3em;
+  border-radius: 4px;
+  font-size: 0.9em;
+  font-family: 'SF Mono', 'Fira Code', monospace;
+}
+.markdown-body pre {
+  background: #1E293B;
+  color: #E2E8F0;
+  padding: 0.75em 1em;
+  border-radius: 8px;
+  overflow-x: auto;
+  margin: 0.5em 0;
+}
+.markdown-body pre code {
+  background: none;
+  padding: 0;
+  font-size: 0.85em;
+}
+.markdown-body blockquote {
+  border-left: 3px solid #3B82F6;
+  padding-left: 0.75em;
+  margin: 0.5em 0;
+  color: #64748B;
+}
+.markdown-body table {
+  border-collapse: collapse;
+  margin: 0.5em 0;
+  width: 100%;
+}
+.markdown-body th,
+.markdown-body td {
+  border: 1px solid #E2E8F0;
+  padding: 0.35em 0.6em;
+  text-align: left;
+}
+.markdown-body th { background: #F8FAFC; font-weight: 600; }
+.markdown-body a  { color: #2563EB; text-decoration: underline; }
+
+/* ── 打字光标 ──────────────────────────────────────────── */
+.typing-cursor::after {
+  content: '▍';
+  animation: blink 1s step-end infinite;
+  color: #3B82F6;
+}
+@keyframes blink {
+  0%, 100% { opacity: 1; }
+  50%      { opacity: 0; }
+}
+
+/* ── iOS 安全区 ────────────────────────────────────────── */
+.pb-safe {
+  padding-bottom: env(safe-area-inset-bottom, 0px);
+}
+
+/* ── 隐藏滚动条 ──────────────────────────────────────────── */
+.scrollbar-none {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+.scrollbar-none::-webkit-scrollbar { display: none; }
+
+/* ── 图片淡入 ──────────────────────────────────────────── */
+.img-fade-in {
+  animation: imgFadeIn 0.4s ease-out;
+}
+@keyframes imgFadeIn {
+  from { opacity: 0; transform: scale(0.95); }
+  to   { opacity: 1; transform: scale(1); }
+}
